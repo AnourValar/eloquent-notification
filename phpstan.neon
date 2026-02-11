@@ -1,0 +1,38 @@
+parameters:
+
+    paths:
+        - src
+
+    # The level 10 is the highest level
+    level: 5
+
+    ignoreErrors:
+        - '#\(\) on an unknown class App\.#'
+        - '#\(\) on an unknown class Cache\.#'
+        - '#\(\) on an unknown class Log\.#'
+        - '#\(\) on an unknown class Notification\.#'
+        - '#\(\) on an unknown class Str\.#'
+        - '#\(\) on an unknown class Validator\.#'
+        - '#\(\) on an unknown class RateLimiter\.#'
+        - '#\(\) on an unknown class Mail\.#'
+        - '#Call to an undefined method Illuminate\\Notifications\\Notification#'
+        - '#Access to an undefined property AnourValar\\EloquentNotification\\UserNotification\:\:#'
+        - '#EloquentNotification\\UserNotification\)\>\:\:withTrashed\(\)#'
+        - '#Access to an undefined property Illuminate\\Foundation\\Auth\\User#'
+        - '#on an unknown class Atom#'
+        - '#Call to an undefined method Illuminate\\Foundation\\Auth\\User\:\:notify\(\)#'
+
+    excludePaths:
+
+    checkFunctionNameCase: true
+    checkInternalClassCaseSensitivity: true
+    reportMaybesInMethodSignatures: true
+    reportStaticMethodSignatures: true
+    checkUninitializedProperties: true
+    checkDynamicProperties: true
+    reportAlwaysTrueInLastCondition: true
+    reportWrongPhpDocTypeInVarTag: true
+    checkMissingCallableSignature: true
+    reportPossiblyNonexistentGeneralArrayOffset: true
+    reportPossiblyNonexistentConstantArrayOffset: true
+    reportAnyTypeWideningInVarTag: true
