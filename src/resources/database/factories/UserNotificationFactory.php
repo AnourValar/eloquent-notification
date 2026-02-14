@@ -17,7 +17,7 @@ class UserNotificationFactory extends Factory
      */
     public function definition(): array
     {
-        $triggers = array_keys(config('notification.trigger'));
+        $triggers = array_keys(config('eloquent_notification.trigger'));
         shuffle($triggers);
 
         return [
@@ -27,7 +27,7 @@ class UserNotificationFactory extends Factory
             },
             'trigger' => $triggers[0],
             'channels' => function (array $attributes) {
-                $channels = config('notification.trigger.' . $attributes['trigger'] . '.channels');
+                $channels = config('eloquent_notification.trigger.' . $attributes['trigger'] . '.channels');
                 shuffle($channels);
 
                 return array_slice($channels, 0, mt_rand(1, count($channels)));

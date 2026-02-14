@@ -47,11 +47,11 @@ class ConfirmService
             $exists = $this->getUserModel()->where($emailAttribute, '=', $email)->first();
 
             if ($emailShouldExists && ! $exists) {
-                throw new ValidationException(trans('notification::confirm.email_not_exists'));
+                throw new ValidationException(trans('eloquent_notification::confirm.email_not_exists'));
             }
 
             if (! $emailShouldExists && $exists) {
-                throw new ValidationException(trans('notification::confirm.email_already_exists'));
+                throw new ValidationException(trans('eloquent_notification::confirm.email_already_exists'));
             }
         }
 
@@ -63,10 +63,10 @@ class ConfirmService
             'type' => 'confirm.email',
             'code' => $code,
             'email' => $email,
-            'expired_at' => now()->addSeconds(config('notification.confirm.email_expire'))->timestamp,
+            'expired_at' => now()->addSeconds(config('eloquent_notification.confirm.email_expire'))->timestamp,
         ]);
 
-        $class = config('notification.confirm.notification');
+        $class = config('eloquent_notification.confirm.notification');
         (new PersonMapper(email: $email, locale: \App::getLocale()))->notify(new $class($code, $notificationParams));
         return ['cryptogram_email' => $cryptogram];
     }
@@ -97,32 +97,32 @@ class ConfirmService
                 $cryptogramEmail = null;
             }
         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            throw new ValidationException(trans('notification::confirm.incorrect'));
+            throw new ValidationException(trans('eloquent_notification::confirm.incorrect'));
         }
 
         if (($cryptogramEmail['type'] ?? null) !== 'confirm.email') {
-            throw new ValidationException(trans('notification::confirm.incorrect'));
+            throw new ValidationException(trans('eloquent_notification::confirm.incorrect'));
         }
 
         if ($cryptogramEmail['expired_at'] < now()->timestamp) {
-            throw new ValidationException([$validateKey => trans('notification::confirm.expired')]);
+            throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.expired')]);
         }
 
-        $this->throttle('validate_email', $sha1, 'notification::confirm.expired');
+        $this->throttle('validate_email', $sha1, 'eloquent_notification::confirm.expired');
 
         if (! isset($inputEmail)) {
-            throw new ValidationException([$validateKey => trans('notification::confirm.email_is_empty')]);
+            throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.email_is_empty')]);
         }
 
         if ($cryptogramEmail['email'] !== $inputEmail) {
-            throw new ValidationException([$validateKey => trans('notification::confirm.incorrect_code')]);
+            throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.incorrect_code')]);
         }
 
         if ($cryptogramEmail['code'] !== $inputCodeEmail) {
-            throw new ValidationException([$validateKey => trans('notification::confirm.incorrect_code')]);
+            throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.incorrect_code')]);
         }
 
-        $this->throttle('validate_email', $sha1, 'notification::confirm.expired', true);
+        $this->throttle('validate_email', $sha1, 'eloquent_notification::confirm.expired', true);
         return $inputEmail;
     }
 
@@ -165,11 +165,11 @@ class ConfirmService
             $exists = $this->getUserModel()->where($phoneAttribute, '=', $phone)->first();
 
             if ($phoneShouldExists && ! $exists) {
-                throw new ValidationException(trans('notification::confirm.phone_not_exists'));
+                throw new ValidationException(trans('eloquent_notification::confirm.phone_not_exists'));
             }
 
             if (! $phoneShouldExists && $exists) {
-                throw new ValidationException(trans('notification::confirm.phone_already_exists'));
+                throw new ValidationException(trans('eloquent_notification::confirm.phone_already_exists'));
             }
         }
 
@@ -181,10 +181,10 @@ class ConfirmService
             'type' => 'confirm.phone',
             'code' => $code,
             'phone' => $phone,
-            'expired_at' => now()->addSeconds(config('notification.confirm.phone_expire'))->timestamp,
+            'expired_at' => now()->addSeconds(config('eloquent_notification.confirm.phone_expire'))->timestamp,
         ]);
 
-        $class = config('notification.confirm.notification');
+        $class = config('eloquent_notification.confirm.notification');
         (new PersonMapper(phone: $phone, locale: \App::getLocale()))->notify(new $class($code, $notificationParams));
         return ['cryptogram_phone' => $cryptogram];
     }
@@ -215,32 +215,32 @@ class ConfirmService
                 $cryptogramPhone = null;
             }
         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            throw new ValidationException(trans('notification::confirm.incorrect'));
+            throw new ValidationException(trans('eloquent_notification::confirm.incorrect'));
         }
 
         if (($cryptogramPhone['type'] ?? null) !== 'confirm.phone') {
-            throw new ValidationException(trans('notification::confirm.incorrect'));
+            throw new ValidationException(trans('eloquent_notification::confirm.incorrect'));
         }
 
         if ($cryptogramPhone['expired_at'] < now()->timestamp) {
-            throw new ValidationException([$validateKey => trans('notification::confirm.expired')]);
+            throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.expired')]);
         }
 
-        $this->throttle('validate_phone', $sha1, 'notification::confirm.expired');
+        $this->throttle('validate_phone', $sha1, 'eloquent_notification::confirm.expired');
 
         if (! isset($inputPhone)) {
-            throw new ValidationException([$validateKey => trans('notification::confirm.phone_is_empty')]);
+            throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.phone_is_empty')]);
         }
 
         if ($cryptogramPhone['phone'] !== $inputPhone) {
-            throw new ValidationException([$validateKey => trans('notification::confirm.incorrect_code')]);
+            throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.incorrect_code')]);
         }
 
         if ($cryptogramPhone['code'] !== $inputCodePhone) {
-            throw new ValidationException([$validateKey => trans('notification::confirm.incorrect_code')]);
+            throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.incorrect_code')]);
         }
 
-        $this->throttle('validate_phone', $sha1, 'notification::confirm.expired', true);
+        $this->throttle('validate_phone', $sha1, 'eloquent_notification::confirm.expired', true);
         return $inputPhone;
     }
 
@@ -285,9 +285,9 @@ class ConfirmService
      * @return void
      * @throws \AnourValar\EloquentValidation\Exceptions\ValidationException
      */
-    protected function throttle(string $name, string $key, string $error = 'notification::confirm.too_many', bool $payOff = false): void
+    protected function throttle(string $name, string $key, string $error = 'eloquent_notification::confirm.too_many', bool $payOff = false): void
     {
-        foreach (config("notification.confirm.throttle.{$name}") as $index => $policy) {
+        foreach (config("eloquent_notification.confirm.throttle.{$name}") as $index => $policy) {
             $cacheKey = implode(' / ', [__METHOD__, $name, $index, $key]);
 
             if (\RateLimiter::tooManyAttempts($cacheKey, $policy['limit'])) {

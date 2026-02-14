@@ -87,7 +87,7 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
                 implode(' / ', [__METHOD__, get_class($notifiable), $notifiableId]),
                 $this->cacheChannels(),
                 function () use ($notifiableId) {
-                    $class = config('notification.model');
+                    $class = config('eloquent_notification.model');
                     return $class::where('user_id', '=', $notifiableId)->get(['trigger', 'channels'])->pluck('channels', 'trigger')->toArray();
                 }
             );
@@ -123,7 +123,7 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
      */
     private function getTrigger(): string
     {
-        foreach (config('notification.trigger') as $trigger => $details) {
+        foreach (config('eloquent_notification.trigger') as $trigger => $details) {
             if (get_class($this) === $details['bind']) {
                 return $trigger;
             }

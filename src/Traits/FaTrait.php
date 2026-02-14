@@ -35,7 +35,7 @@ trait FaTrait
     {
         // Cryptograms qty (pre)
         if (! is_array($cryptograms) || ! $cryptograms || count($cryptograms) > 5) {
-            throw (new ValidationException(trans('notification::confirm.miscount', ['qty' => '1-5'])))->status(403);
+            throw (new ValidationException(trans('eloquent_notification::confirm.miscount', ['qty' => '1-5'])))->status(403);
         }
 
 
@@ -45,29 +45,29 @@ trait FaTrait
             // Correct
             $cryptogram = $this->safeDecrypt($cryptogram);
             if (! $cryptogram instanceof \AnourValar\EloquentNotification\FaMapper) {
-                throw (new ValidationException(trans('notification::confirm.incorrect')))->status(403);
+                throw (new ValidationException(trans('eloquent_notification::confirm.incorrect')))->status(403);
             }
 
             // Lifecycle
             if ($cryptogram->expiredAt < now()->timestamp) {
-                throw new ValidationException(trans('notification::confirm.expired'));
+                throw new ValidationException(trans('eloquent_notification::confirm.expired'));
             }
 
             // Available (and unique)
             if (in_array($cryptogram->name, $faBlack) || ($faWhite && ! in_array($cryptogram->name, $faWhite))) {
-                throw (new ValidationException(trans('notification::confirm.incorrect')))->status(403);
+                throw (new ValidationException(trans('eloquent_notification::confirm.incorrect')))->status(403);
             }
             $faBlack[] = $cryptogram->name;
 
             // Union contacts
             if (isset($contacts) && ! array_intersect($contacts, $cryptogram->contacts)) {
-                throw (new ValidationException(trans('notification::confirm.incorrect')))->status(403);
+                throw (new ValidationException(trans('eloquent_notification::confirm.incorrect')))->status(403);
             }
 
             // Same contacts
             foreach ($cryptogram->contacts as $key => $value) {
                 if (isset($contacts[$key]) && $contacts[$key] !== $value) {
-                    throw (new ValidationException(trans('notification::confirm.incorrect')))->status(403);
+                    throw (new ValidationException(trans('eloquent_notification::confirm.incorrect')))->status(403);
                 }
             }
 
@@ -81,7 +81,7 @@ trait FaTrait
             $qty = $qty($contacts);
         }
         if (count($cryptograms) != $qty) {
-            throw (new ValidationException(trans('notification::confirm.miscount', ['qty' => $qty])))->status(403);
+            throw (new ValidationException(trans('eloquent_notification::confirm.miscount', ['qty' => $qty])))->status(403);
         }
 
 

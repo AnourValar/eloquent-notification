@@ -45,8 +45,8 @@ class ConfirmNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage())
-            ->subject(trans($this->params['subject'] ?? 'notification::confirm.notification.mail.subject'))
-            ->markdown($this->params['markdown'] ?? 'notification::markdown.confirm.email', ['code' => $this->code, ...$this->params]);
+            ->subject(trans($this->params['subject'] ?? 'eloquent_notification::confirm.notification.mail.subject'))
+            ->markdown($this->params['markdown'] ?? 'eloquent_notification::markdown.confirm.email', ['code' => $this->code, ...$this->params]);
     }
 
     /**
@@ -54,6 +54,6 @@ class ConfirmNotification extends Notification implements ShouldQueue
      */
     public function toSms(object $notifiable): string
     {
-        return trans($this->params['message'] ?? 'notification::confirm.notification.sms', ['code' => $this->code, ...$this->params]);
+        return trans($this->params['message'] ?? 'eloquent_notification::confirm.notification.sms', ['code' => $this->code, ...$this->params]);
     }
 }

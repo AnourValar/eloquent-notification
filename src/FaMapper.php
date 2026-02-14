@@ -36,7 +36,7 @@ final class FaMapper
             throw new \RuntimeException('Incorrect usage');
         }
 
-        $this->expiredAt = now()->addSeconds(config('notification.confirm.fa_expire'))->timestamp;
+        $this->expiredAt = now()->addSeconds(config('eloquent_notification.confirm.fa_expire'))->timestamp;
     }
 
     /**

@@ -97,7 +97,7 @@ class ServiceTest extends AbstractSuite
     {
         \App::setLocale('ru');
 
-        config(['notification.trigger' => [
+        config(['eloquent_notification.trigger' => [
             'foo' => ['channels' => ['database', 'mail']],
             'bar' => ['channels' => ['mail', 'sms']],
             'baz' => ['channels' => ['sms']],
@@ -124,7 +124,7 @@ class ServiceTest extends AbstractSuite
 
         $mock = \Atom::partialMock();
         $arg = ['notification' => FooNotification::class, 'arguments' => ['foo']];
-        $mock->shouldReceive('exchangerPush')->once()->with("notification_package:collect_notify:{$user1->id}", $arg);
+        $mock->shouldReceive('exchangerPush')->once()->with("eloquent_notification:collect_notify:{$user1->id}", $arg);
 
         \App::make(\AnourValar\EloquentNotification\Service::class)->collectNotify(
             $user1,

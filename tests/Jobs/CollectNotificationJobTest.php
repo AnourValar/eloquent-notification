@@ -25,7 +25,7 @@ class CollectNotificationJobTest extends AbstractSuite
         $arg = [
             ['notification' => FooNotification::class, 'arguments' => ['foo']],
         ];
-        $mock->shouldReceive('exchangerPull')->once()->with("notification_package:collect_notify:{$user->id}")->andReturn($arg);
+        $mock->shouldReceive('exchangerPull')->once()->with("eloquent_notification:collect_notify:{$user->id}")->andReturn($arg);
 
         dispatch(new CollectNotificationJob($user));
 
@@ -55,7 +55,7 @@ class CollectNotificationJobTest extends AbstractSuite
             ['notification' => BazNotification::class, 'arguments' => ['baz-2']],
             ['notification' => BazNotification::class, 'arguments' => ['baz-3']],
         ];
-        $mock->shouldReceive('exchangerPull')->once()->with("notification_package:collect_notify:{$user->id}")->andReturn($arg);
+        $mock->shouldReceive('exchangerPull')->once()->with("eloquent_notification:collect_notify:{$user->id}")->andReturn($arg);
 
         dispatch(new CollectNotificationJob($user));
 

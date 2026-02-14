@@ -46,7 +46,7 @@ trait PowTrait
     public function requestPow(?int $cost = null): array // @TODO: confirm.dynamic_request_pow - increase on many limits?
     {
         if (! isset($cost)) {
-            $cost = config('notification.confirm.pow_cost');
+            $cost = config('eloquent_notification.confirm.pow_cost');
         }
 
         $salt = $this->getSalt();
@@ -54,7 +54,7 @@ trait PowTrait
         $cryptogram = encrypt([
             'type' => 'confirm.pow',
             'puzzle' => $puzzle, // challenge
-            'expired_at' => now()->addSeconds(config('notification.confirm.pow_expire'))->timestamp,
+            'expired_at' => now()->addSeconds(config('eloquent_notification.confirm.pow_expire'))->timestamp,
         ]);
 
         if (! \App::isProduction()) {
@@ -87,23 +87,23 @@ trait PowTrait
                 $sha1 = '';
             }
         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            throw new ValidationException(trans('notification::confirm.incorrect'));
+            throw new ValidationException(trans('eloquent_notification::confirm.incorrect'));
         }
 
         if (($cryptogramPow['type'] ?? null) !== 'confirm.pow') {
-            throw new ValidationException(trans('notification::confirm.incorrect'));
+            throw new ValidationException(trans('eloquent_notification::confirm.incorrect'));
         }
 
         if ($cryptogramPow['expired_at'] < now()->timestamp) {
-            throw new ValidationException(['code' => trans('notification::confirm.expired')]);
+            throw new ValidationException(['code' => trans('eloquent_notification::confirm.expired')]);
         }
 
         if ($cryptogramPow['puzzle'] !== $puzzlePow) {
-            throw new ValidationException(trans('notification::confirm.incorrect_code'));
+            throw new ValidationException(trans('eloquent_notification::confirm.incorrect_code'));
         }
 
-        if (! \Cache::add(implode(' / ', [__METHOD__, $sha1]), '1', (config('notification.confirm.pow_expire') + 1))) {
-            throw new ValidationException(['code' => trans('notification::confirm.expired')]);
+        if (! \Cache::add(implode(' / ', [__METHOD__, $sha1]), '1', (config('eloquent_notification.confirm.pow_expire') + 1))) {
+            throw new ValidationException(['code' => trans('eloquent_notification::confirm.expired')]);
         }
 
         return true;

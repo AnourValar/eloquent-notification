@@ -20,8 +20,8 @@ abstract class AbstractSuite extends \Orchestra\Testbench\TestCase
         $this->loadMigrationsFrom(__DIR__.'/../src/resources/database/migrations');
         $this->setUpDatabase($this->app);
 
-        config(['notification.model' => \AnourValar\EloquentNotification\UserNotification::class]);
-        config(['notification.trigger' => [
+        config(['eloquent_notification.model' => \AnourValar\EloquentNotification\UserNotification::class]);
+        config(['eloquent_notification.trigger' => [
             'foo' => ['bind' => \AnourValar\EloquentNotification\Tests\FooNotification::class, 'title' => 'Foo', 'channels' => ['mail', 'telegram', 'sms'], 'is_public' => true],
             'bar' => ['bind' => \AnourValar\EloquentNotification\Tests\BarNotification::class, 'title' => 'Bar', 'channels' => ['mail', 'telegram', 'sms'], 'is_public' => true],
             'baz' => ['bind' => \AnourValar\EloquentNotification\Tests\BazNotification::class, 'title' => 'Baz', 'channels' => ['mail', 'telegram', 'sms'], 'is_public' => true],

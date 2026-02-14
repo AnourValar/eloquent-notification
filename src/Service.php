@@ -20,16 +20,16 @@ class Service
     public function sync(\Illuminate\Contracts\Auth\Authenticatable $user, array $data, $validatePrefix = null, ?string $group = null): void
     {
         // Current
-        $class = config('notification.model');
+        $class = config('eloquent_notification.model');
         $collection = $class::where('user_id', '=', $user->getAuthIdentifier())->get();
 
 
         // New
         foreach ($data as $trigger => $channels) {
             $curr = $collection->where('trigger', '=', $trigger);
-            if ($group && config("notification.trigger.{$trigger}") && ! config("notification.trigger.{$trigger}.{$group}")) {
+            if ($group && config("eloquent_notification.trigger.{$trigger}") && ! config("eloquent_notification.trigger.{$trigger}.{$group}")) {
                 throw new ValidationException(
-                    ['trigger' => trans('eloquent-validation::validation.unchangeable', ['attribute' => trans(config("notification.trigger.{$trigger}.title"))])],
+                    ['trigger' => trans('eloquent-validation::validation.unchangeable', ['attribute' => trans(config("eloquent_notification.trigger.{$trigger}.title"))])],
                     prefix: [$validatePrefix, $trigger]
                 );
             }
@@ -52,7 +52,7 @@ class Service
 
         // Left (not actual)
         foreach ($collection as $item) {
-            if ($group && ! config("notification.trigger.{$item->trigger}.{$group}")) {
+            if ($group && ! config("eloquent_notification.trigger.{$item->trigger}.{$group}")) {
                 continue;
             }
 
@@ -68,14 +68,14 @@ class Service
     public function channels(): array
     {
         $channels = [];
-        foreach (config('notification.trigger') as $details) {
+        foreach (config('eloquent_notification.trigger') as $details) {
             $channels = array_merge($channels, $details['channels']);
         }
         $channels = array_values(array_unique($channels));
 
         $result = [];
         foreach ($channels as $channel) {
-            $result[$channel] = trans('notification::user_notification.channels.' . $channel);
+            $result[$channel] = trans('eloquent_notification::user_notification.channels.' . $channel);
         }
         return $result;
     }
@@ -95,6 +95,6 @@ class Service
             ['notification' => $notificationClass, 'arguments' => $notificationArguments]
         );
 
-        CollectNotificationJob::dispatch($user)->delay(now()->addSeconds(config('notification.collect_delay_seconds')));
+        CollectNotificationJob::dispatch($user)->delay(now()->addSeconds(config('eloquent_notification.collect_delay_seconds')));
     }
 }

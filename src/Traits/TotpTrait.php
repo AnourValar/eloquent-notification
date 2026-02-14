@@ -51,11 +51,11 @@ trait TotpTrait
         string $algo = 'sha1'
     ): true {
         if (! $secretBase32) {
-            throw new ValidationException([$validateKey => trans('notification::confirm.incorrect_code')]);
+            throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.incorrect_code')]);
         }
 
         if (! is_numeric($code) || strlen($code) != $digits) {
-            throw new ValidationException([$validateKey => trans('notification::confirm.incorrect_code')]);
+            throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.incorrect_code')]);
         }
         $code = (string) $code;
 
@@ -73,7 +73,7 @@ trait TotpTrait
             }
         }
 
-        throw new ValidationException([$validateKey => trans('notification::confirm.incorrect_code')]);
+        throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.incorrect_code')]);
     }
 
     /**
@@ -104,7 +104,7 @@ trait TotpTrait
         }
 
         if (($cryptogram['type'] ?? null) !== 'confirm.totp') {
-            throw new ValidationException([$validateKey => trans('notification::confirm.incorrect_code')]);
+            throw new ValidationException([$validateKey => trans('eloquent_notification::confirm.incorrect_code')]);
         }
 
         return $this->validateTotp($cryptogram['secret'], $code, $validateKey, $window, $step, $digits, $algo);

@@ -30,7 +30,7 @@ class MtsAdapterTest extends AbstractSuite
      */
     public function test_sendMessage()
     {
-        config(['notification.bindings.' . SmsInterface::class => [
+        config(['eloquent_notification.bindings.' . SmsInterface::class => [
             'mts_token' => 'foo',
             'mts_sender' => 'bar',
         ]]);

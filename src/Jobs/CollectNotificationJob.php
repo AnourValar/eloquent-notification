@@ -18,7 +18,7 @@ class CollectNotificationJob implements ShouldBeUniqueUntilProcessing, ShouldQue
     /**
      * @var string
      */
-    public const EXCHANGER_KEY = 'notification_package:collect_notify:';
+    public const EXCHANGER_KEY = 'eloquent_notification:collect_notify:';
 
     /**
      * Create a new job instance.

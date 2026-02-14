@@ -24,7 +24,7 @@ class TelegramAdapter implements TelegramInterface
                 $http->timeouts(3000, 10000)->extendInfo();
             });
 
-        $this->config = config('notification.bindings.' . TelegramInterface::class);
+        $this->config = config('eloquent_notification.bindings.' . TelegramInterface::class);
     }
 
     /**

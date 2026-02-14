@@ -14,10 +14,10 @@ class AnourValarEloquentNotificationServiceProvider extends ServiceProvider
     public function register()
     {
         // config
-        $this->mergeConfigFrom(__DIR__.'/../resources/config/notification.php', 'notification');
+        $this->mergeConfigFrom(__DIR__.'/../resources/config/eloquent_notification.php', 'eloquent_notification');
 
         // bindings
-        foreach (config('notification.bindings') as $interface => $implementation) {
+        foreach (config('eloquent_notification.bindings') as $interface => $implementation) {
             $this->app->singleton($interface, function ($app, $arguments = []) use ($implementation) {
                 return new $implementation['bind'](...$arguments);
             });
@@ -32,7 +32,7 @@ class AnourValarEloquentNotificationServiceProvider extends ServiceProvider
     public function boot()
     {
         // config
-        $this->publishes([__DIR__.'/../resources/config/notification.php' => config_path('notification.php')], 'config');
+        $this->publishes([__DIR__.'/../resources/config/eloquent_notification.php' => config_path('eloquent_notification.php')], 'config');
 
         // migrations
         //$this->loadMigrationsFrom(__DIR__.'/../resources/database/migrations');
@@ -42,13 +42,13 @@ class AnourValarEloquentNotificationServiceProvider extends ServiceProvider
         $this->publishes([__DIR__.'/../resources/stubs/' => app_path()], 'models');
 
         // langs
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang/', 'notification');
-        $this->publishes([__DIR__.'/../resources/lang/' => lang_path('vendor/notification')]);
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang/', 'eloquent_notification');
+        $this->publishes([__DIR__.'/../resources/lang/' => lang_path('vendor/eloquent_notification')]);
 
         // views
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'notification');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'eloquent_notification');
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/notification'),
+            __DIR__.'/../resources/views' => resource_path('views/vendor/eloquent_notification'),
         ]);
 
         // extends - telegram channel

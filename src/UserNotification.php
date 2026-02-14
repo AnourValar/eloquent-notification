@@ -164,7 +164,7 @@ class UserNotification extends Model
      */
     protected function getAttributeNamesFromModelLang(): array
     {
-        $attributeNames = trans('notification::user_notification.attributes');
+        $attributeNames = trans('eloquent_notification::user_notification.attributes');
 
         return is_array($attributeNames) ? $attributeNames : [];
     }
@@ -183,7 +183,7 @@ class UserNotification extends Model
     {
         return [
             'user_id' => ['required', 'integer', 'min:1'],
-            'trigger' => ['required', 'config:notification.trigger'],
+            'trigger' => ['required', 'config:eloquent_notification.trigger'],
             'channels' => ['nullable', 'list', 'min:1', 'max:10'], // required in a fact
                 'channels.*' => ['required', 'string', 'distinct'],
         ];
@@ -208,13 +208,13 @@ class UserNotification extends Model
             }
 
             if (! $user) {
-                $validator->errors()->add('user_id', trans('notification::user_notification.user_id_not_exists'));
+                $validator->errors()->add('user_id', trans('eloquent_notification::user_notification.user_id_not_exists'));
             }
         }
 
         // channels
-        if ($this->channels && array_diff($this->channels, config("notification.trigger.{$this->trigger}.channels"))) {
-            $validator->errors()->add('user_id', trans('notification::user_notification.channels_not_exists'));
+        if ($this->channels && array_diff($this->channels, config("eloquent_notification.trigger.{$this->trigger}.channels"))) {
+            $validator->errors()->add('user_id', trans('eloquent_notification::user_notification.channels_not_exists'));
         }
     }
 

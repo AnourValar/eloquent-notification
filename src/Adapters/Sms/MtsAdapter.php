@@ -24,7 +24,7 @@ class MtsAdapter implements SmsInterface
                 $http->asJsonClient()->timeouts(3000, 10000)->extendInfo();
             });
 
-        $this->config = config('notification.bindings.' . SmsInterface::class);
+        $this->config = config('eloquent_notification.bindings.' . SmsInterface::class);
     }
 
     /**

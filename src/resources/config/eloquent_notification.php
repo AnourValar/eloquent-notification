@@ -33,9 +33,9 @@ return [
     'trigger' => [ // every trigger should have a unique handler (bind)
         /*'logged_in' => [
             'bind' => \App\Notifications\Trigger\LoggedInNotification::class,
-            'title' => 'notification::user_notification.trigger.logged_in',
+            'title' => 'eloquent_notification::user_notification.trigger.logged_in',
             'channels' => ['sms', 'telegram', 'mail', 'database'],
-            //'optgroup' => 'notification::user_notification.trigger.user_optgroup',
+            //'optgroup' => 'eloquent_notification::user_notification.trigger.user_optgroup',
         ],*/
     ],
 
