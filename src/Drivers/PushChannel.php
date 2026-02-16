@@ -13,6 +13,7 @@ class PushChannel
     public function send(object $notifiable, Notification $notification): void
     {
         $tokens = array_filter((array) $notifiable->routeNotificationFor('push', $notification));
+        $tokens = array_slice($tokens, 0, 10); // too many devices
         if (! $tokens) {
             return;
         }

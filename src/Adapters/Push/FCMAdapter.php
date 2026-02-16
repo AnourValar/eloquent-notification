@@ -75,7 +75,7 @@ class FCMAdapter implements PushInterface
      */
     protected function obtainAccessToken(): string
     {
-        $expireIn = 3600;
+        $expireIn = 3600; // a maxiumum
 
         return \Cache::memo()->remember(
             implode(' / ', [__METHOD__, $this->config['fcm_service_account']['client_email'], $this->config['fcm_service_account']['project_id']]),
