@@ -12,7 +12,7 @@ use AnourValar\EloquentValidation\Exceptions\ValidationException;
  * - Password
  * - Code sent to phone (sms/whatsapp/telegram)
  * - Code sent to email
- * - Session (including on other devices ["transfer" via QR code (base64_decode from encrypt saves ~25%)])
+ * - Session (including other devices ["transfer" via QR code (base64_decode from encrypt saves ~25%)])
  * - TOTP
  * - "Whitelist" of IP addresses
  * - Security questions

@@ -23,5 +23,6 @@ return [
         'mail' => 'E-mail',
         'sms' => 'SMS',
         'telegram' => 'Telegram',
+        'push' => 'Push',
     ],
 ];

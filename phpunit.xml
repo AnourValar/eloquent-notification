@@ -19,6 +19,7 @@
     <env name="APP_KEY" value="base64:W9OEqxJgN9blde9VyW0CPQu+Sab3dngPwI98rCAcMyM="/>
     <env name="ELOQUENT_NOTIFICATION_TELEGRAM_ADAPTER" value="AnourValar\EloquentNotification\Adapters\Telegram\MockAdapter"/>
     <env name="ELOQUENT_NOTIFICATION_SMS_ADAPTER" value="AnourValar\EloquentNotification\Adapters\Sms\MockAdapter"/>
+    <env name="ELOQUENT_NOTIFICATION_PUSH_ADAPTER" value="AnourValar\EloquentNotification\Adapters\Push\MockAdapter"/>
     <env name="ELOQUENT_NOTIFICATION_EXCHANGER_ADAPTER" value="AnourValar\EloquentNotification\Adapters\Exchanger\NullAdapter"/>
   </php>
   <source>

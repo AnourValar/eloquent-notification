@@ -25,6 +25,15 @@ return [
             'bind' => env('ELOQUENT_NOTIFICATION_EXCHANGER_ADAPTER', AnourValar\EloquentNotification\Adapters\Exchanger\NullAdapter::class),
             'mail' => ['transport' => 'smtp', 'host' => env('ELOQUENT_NOTIFICATION_MAIL_HOST'), 'port' => 1025, 'encryption' => 'tls'],
         ],
+
+        AnourValar\EloquentNotification\Adapters\Push\PushInterface::class => [
+            'bind' => env('ELOQUENT_NOTIFICATION_PUSH_ADAPTER', AnourValar\EloquentNotification\Adapters\Push\FCMAdapter::class),
+            'fcm_service_account' => [
+                'project_id' => env('ELOQUENT_NOTIFICATION_FCM_PROJECT_ID'),
+                'private_key' => env('ELOQUENT_NOTIFICATION_FCM_PRIVATE_KEY'),
+                'client_email' => env('ELOQUENT_NOTIFICATION_FCM_CLIENT_EMAIL'),
+            ],
+        ],
     ],
 
     'model' => App\UserNotification::class,
@@ -34,7 +43,7 @@ return [
         /*'logged_in' => [
             'bind' => \App\Notifications\Trigger\LoggedInNotification::class,
             'title' => 'eloquent_notification::user_notification.trigger.logged_in',
-            'channels' => ['sms', 'telegram', 'mail', 'database'],
+            'channels' => ['sms', 'telegram', 'mail', 'push', 'database'],
             //'optgroup' => 'eloquent_notification::user_notification.trigger.user_optgroup',
         ],*/
     ],

@@ -60,5 +60,10 @@ class AnourValarEloquentNotificationServiceProvider extends ServiceProvider
         \Notification::extend('sms', function () {
             return \App::make(\AnourValar\EloquentNotification\Drivers\SmsChannel::class);
         });
+
+        // extends - push channel
+        \Notification::extend('push', function () {
+            return \App::make(\AnourValar\EloquentNotification\Drivers\PushChannel::class);
+        });
     }
 }

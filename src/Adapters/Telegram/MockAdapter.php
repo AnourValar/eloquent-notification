@@ -6,7 +6,7 @@ class MockAdapter implements TelegramInterface
 {
     /**
      * {@inheritDoc}
-     * @see \AnourValar\EloquentNotification\Adapters\Telegram\MockAdapter::fromConfig()
+     * @see \AnourValar\EloquentNotification\Adapters\Telegram\TelegramInterface::fromConfig()
      */
     public function fromConfig(array $config): self
     {

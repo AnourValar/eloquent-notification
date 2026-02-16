@@ -41,6 +41,17 @@ public function routeNotificationForSms($notification)
 {
     return $this->phone; // set your attribute
 }
+
+/**
+ * Route notifications for the Push channel.
+ *
+ * @param  \Illuminate\Notifications\Notification  $notification
+ * @return string|array|null
+ */
+public function routeNotificationForPush($notification)
+{
+    return $this->tokens->pluck('push_token')->toArray(); // set your attribute
+}
 ```
 
 **Step #2: Create a notification**
