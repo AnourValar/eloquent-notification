@@ -19,6 +19,8 @@ return [
             'bind' => env('ELOQUENT_NOTIFICATION_SMS_ADAPTER', AnourValar\EloquentNotification\Adapters\Sms\MtsAdapter::class),
             'mts_token' => env('ELOQUENT_NOTIFICATION_MTS_TOKEN', ''),
             'mts_sender' => env('ELOQUENT_NOTIFICATION_MTS_SENDER', 'MyApp'),
+            'smsc_api_key' => env('ELOQUENT_NOTIFICATION_SMSC_API_TOKEN'),
+            'smsc_sender' => env('ELOQUENT_NOTIFICATION_SMSC_SENDER', 'MyApp'),
         ],
 
         AnourValar\EloquentNotification\Adapters\Exchanger\ExchangerInterface::class => [

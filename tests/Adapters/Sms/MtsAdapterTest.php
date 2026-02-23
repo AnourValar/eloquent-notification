@@ -58,6 +58,7 @@ class MtsAdapterTest extends AbstractSuite
 
             $mock
                 ->shouldReceive('exec')
+                ->with('https://api.exolve.ru/messaging/v1/SendSMS')
                 ->once()
                 ->andReturn(new \AnourValar\HttpClient\FakeResponse([], ['message_id' => 575976245313935471]));
         });
