@@ -877,7 +877,7 @@ class ConfirmServiceTest extends AbstractSuite
 
         $user->forceFill(['email' => 'foobar@example.org.net', 'phone' => '79000000002']);
         $this->assertEquals(
-            ['email' => ['mask' => 'f****r@example.org.net', 'value' => true], 'phone' => ['mask' => '79*******02', 'value' => true], 'password' => null, 'totp' => null],
+            ['email' => ['mask' => 'fo**ar@example.org.net', 'value' => true], 'phone' => ['mask' => '79*******02', 'value' => true], 'password' => null, 'totp' => null],
             $this->confirmService->fa($user)
         );
         $this->assertSame('foobar@example.org.net', decrypt($this->confirmService->fa($user)['email']['value']));
@@ -885,7 +885,7 @@ class ConfirmServiceTest extends AbstractSuite
 
         $user->forceFill(['email' => 'h-e-l-l-o@example.net', 'phone' => '7912345678', 'password' => 'foo']);
         $this->assertEquals(
-            ['email' => ['mask' => 'h*******o@example.net', 'value' => true], 'phone' => ['mask' => '79******78', 'value' => true], 'password' => true, 'totp' => null],
+            ['email' => ['mask' => 'h-*****-o@example.net', 'value' => true], 'phone' => ['mask' => '79******78', 'value' => true], 'password' => true, 'totp' => null],
             $this->confirmService->fa($user)
         );
         $this->assertSame('h-e-l-l-o@example.net', decrypt($this->confirmService->fa($user)['email']['value']));
@@ -893,7 +893,7 @@ class ConfirmServiceTest extends AbstractSuite
 
         $user->forceFill(['totp_secret' => 'bar']);
         $this->assertEquals(
-            ['email' => ['mask' => 'h*******o@example.net', 'value' => true], 'phone' => ['mask' => '79******78', 'value' => true], 'password' => true, 'totp' => true],
+            ['email' => ['mask' => 'h-*****-o@example.net', 'value' => true], 'phone' => ['mask' => '79******78', 'value' => true], 'password' => true, 'totp' => true],
             $this->confirmService->fa($user)
         );
     }

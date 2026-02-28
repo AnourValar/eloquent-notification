@@ -107,9 +107,11 @@ trait FaTrait
      */
     public function fa(?\Illuminate\Foundation\Auth\User $user): array
     {
+        $stringHelper = \App::make(\AnourValar\LaravelAtom\Helpers\StringHelper::class);
+
         return [
-            'email' => $user?->email ? ['mask' => preg_replace('#(?<=.).(?=[^@]+@)#u', '*', $user->email), 'value' => encrypt($user->email)] : null,
-            'phone' => $user?->phone ? ['mask' => preg_replace('#(?<=.{2}).(?=.{2})#u', '*', $user->phone), 'value' => encrypt($user->phone)] : null,
+            'email' => $user?->email ? ['mask' => $stringHelper->mask($user->email, '@'), 'value' => encrypt($user->email)] : null,
+            'phone' => $user?->phone ? ['mask' => $stringHelper->mask($user->phone), 'value' => encrypt($user->phone)] : null,
             'password' => $user?->password ? true : null,
             'totp' => $user?->totp_secret ? true : null,
         ];
