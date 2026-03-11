@@ -86,15 +86,24 @@ class Service
      * @param \Illuminate\Foundation\Auth\User $user
      * @param string $notificationClass
      * @param array $notificationArguments
+     * @param string $groupBy
+     * @param int|null $delaySeconds
      * @return void
      */
-    public function collectNotify(\Illuminate\Foundation\Auth\User $user, string $notificationClass, array $notificationArguments): void
-    {
+    public function collectNotify(
+        \Illuminate\Foundation\Auth\User $user,
+        string $notificationClass,
+        array $notificationArguments,
+        string $groupBy = '',
+        ?int $delaySeconds = null
+    ): void {
         \Atom::exchangerPush(
             CollectNotificationJob::EXCHANGER_KEY . $user->id,
-            ['notification' => $notificationClass, 'arguments' => $notificationArguments]
+            ['notification' => $notificationClass, 'arguments' => $notificationArguments, 'group_by' => $groupBy]
         );
 
-        CollectNotificationJob::dispatch($user)->delay(now()->addSeconds(config('eloquent_notification.collect_delay_seconds')));
+        $delaySeconds ??= config('eloquent_notification.collect_delay_seconds');
+
+        CollectNotificationJob::dispatch($user)->delay(now()->addSeconds($delaySeconds));
     }
 }

@@ -12,7 +12,7 @@ class ConfirmServiceTest extends AbstractSuite
     /**
      * @var \AnourValar\EloquentNotification\ConfirmService
      */
-    private \AnourValar\EloquentNotification\ConfirmService $confirmService;
+    private ?\AnourValar\EloquentNotification\ConfirmService $confirmService = null;
 
     /**
      * {@inheritDoc}
@@ -750,41 +750,68 @@ class ConfirmServiceTest extends AbstractSuite
         $this->assertSame(['id' => 123, 'phone' => '79000000000', 'email' => 'foo@example.org'], $this->confirmService->validateFa($cryptograms, 2));
 
         // Case 2
+        \Date::setTestNow('2025-10-03 10:00:01');
+        $cryptograms = [
+            encrypt(new FaMapper('foo', ['id' => 123, 'phone' => '79000000000'], strtotime('2025-10-03 10:00:00'))),
+            encrypt(new FaMapper('bar', ['id' => 123, 'email' => 'FOO@example.org'], strtotime('2025-10-03 10:30:00'))),
+        ];
+        $this->assertCustomValidationFailed(fn () => $this->confirmService->validateFa($cryptograms, 2), trans('eloquent_notification::confirm.expired'));
+
+        // Case 3
+        \Date::setTestNow('2025-10-03 10:00:00');
+        $cryptograms = [
+            encrypt(new FaMapper('foo', ['id' => 123, 'phone' => '79000000000'])),
+            encrypt(new FaMapper('bar', ['id' => 123, 'email' => 'FOO@example.org'])),
+        ];
+        \Date::setTestNow('2025-10-03 10:30:00');
+        $this->assertSame(['id' => 123, 'phone' => '79000000000', 'email' => 'foo@example.org'], $this->confirmService->validateFa($cryptograms, 2));
+
+        // Case 4
+        \Date::setTestNow('2025-10-03 10:00:00');
+        $cryptograms = [
+            encrypt(new FaMapper('foo', ['id' => 123, 'phone' => '79000000000'])),
+            encrypt(new FaMapper('bar', ['id' => 123, 'email' => 'FOO@example.org'])),
+        ];
+        \Date::setTestNow('2025-10-03 10:30:01');
+        $this->assertCustomValidationFailed(fn () => $this->confirmService->validateFa($cryptograms, 2), trans('eloquent_notification::confirm.expired'));
+
+        // Case 5
+        \Date::setTestNow('2025-10-03 10:00:00');
         $cryptograms = [
             encrypt(new FaMapper('foo', ['phone' => '79000000000'], strtotime('2025-10-03 10:00:00'))),
             encrypt(new FaMapper('bar', ['phone' => '79000000000', 'email' => 'foo@example.org'], strtotime('2025-10-03 10:30:00'))),
         ];
         $this->assertSame(['phone' => '79000000000', 'email' => 'foo@example.org'], $this->confirmService->validateFa($cryptograms, 2, ['foo', 'bar']));
 
-        // Case 3
+        // Case 6
         $cryptograms = [
             encrypt(new FaMapper('foo', ['id' => 123], strtotime('2025-10-03 10:00:00'))),
             encrypt(new FaMapper('bar', ['id' => 123], strtotime('2025-10-03 10:30:00'))),
         ];
         $this->assertSame(['id' => 123], $this->confirmService->validateFa($cryptograms, 2));
 
-        // Case 4
+        // Case 7
         $cryptograms = [
             encrypt(new FaMapper('foo', ['id' => 123, 'phone' => '79000000000'], strtotime('2025-10-03 10:00:00'))),
             encrypt(new FaMapper('bar', ['id' => 124, 'email' => 'foo@example.org'], strtotime('2025-10-03 10:30:00'))),
         ];
         $this->assertCustomValidationFailed(fn () => $this->confirmService->validateFa($cryptograms, 2), trans('eloquent_notification::confirm.incorrect'));
 
-        // Case 5
+        // Case 8
         $cryptograms = [
             encrypt(new FaMapper('foo', ['id' => 123, 'phone' => '79000000000'], strtotime('2025-10-03 10:00:00'))),
             encrypt(new FaMapper('bar', ['id' => 123, 'email' => 'foo@example.org'], strtotime('2025-10-03 10:30:00'))),
         ];
         $this->assertCustomValidationFailed(fn () => $this->confirmService->validateFa($cryptograms, 2, ['foo', 'baz']), trans('eloquent_notification::confirm.incorrect'));
 
-        // Case 6
+        // Case 9
         $cryptograms = [
             encrypt(new FaMapper('foo', ['phone' => '79000000000'], strtotime('2025-10-03 10:00:00'))),
             encrypt(new FaMapper('bar', ['email' => 'foo@example.org'], strtotime('2025-10-03 10:30:00'))),
         ];
         $this->assertCustomValidationFailed(fn () => $this->confirmService->validateFa($cryptograms, 2), trans('eloquent_notification::confirm.incorrect'));
 
-        // Case 7
+        // Case 10
         $cryptograms = [
             encrypt(new FaMapper('foo', ['id' => 123, 'phone' => '79000000000'], strtotime('2025-10-03 10:00:00'))),
             encrypt(new FaMapper('foo', ['id' => 123, 'email' => 'foo@example.org'], strtotime('2025-10-03 10:30:00'))),

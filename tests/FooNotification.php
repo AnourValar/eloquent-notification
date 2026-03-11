@@ -7,7 +7,8 @@ use Tests\TestCase;
 class FooNotification extends \AnourValar\EloquentNotification\AbstractNotification
 {
     /**
-     * @param array $arg
+     * @param array $arg1
+     * @param array $arg2
      * @return void
      */
     public function __construct(public array $arg1 = [], public array $arg2 = [])

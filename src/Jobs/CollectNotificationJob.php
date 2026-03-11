@@ -48,12 +48,14 @@ class CollectNotificationJob implements ShouldBeUniqueUntilProcessing, ShouldQue
         $notifications = [];
         foreach (\Atom::exchangerPull(static::EXCHANGER_KEY . $this->user->id) as $item) {
             foreach ($item['arguments'] as $key => $value) {
-                $notifications[$item['notification']][$key][] = $value;
+                $notifications[$item['notification']][$item['group_by']][$key][] = $value;
             }
         }
 
-        foreach ($notifications as $class => $arguments) {
-            $this->user->notify(new $class(...$arguments));
+        foreach ($notifications as $class => $groups) {
+            foreach ($groups as $arguments) {
+                $this->user->notify(new $class(...$arguments));
+            }
         }
     }
 }

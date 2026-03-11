@@ -24,10 +24,11 @@ final class FaMapper
      *
      * @param string $name
      * @param array $contacts
+     * @param int|null $expiredTimestamp
      * @return void
      * @throws \RuntimeException
      */
-    public function __construct(string $name, array $contacts)
+    public function __construct(string $name, array $contacts, ?int $expiredTimestamp = null)
     {
         $this->name = $name;
 
@@ -36,7 +37,7 @@ final class FaMapper
             throw new \RuntimeException('Incorrect usage');
         }
 
-        $this->expiredAt = now()->addSeconds(config('eloquent_notification.confirm.fa_expire'))->timestamp;
+        $this->expiredAt = $expiredTimestamp ?? now()->addSeconds(config('eloquent_notification.confirm.fa_expire'))->timestamp;
     }
 
     /**

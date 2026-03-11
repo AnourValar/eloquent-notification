@@ -23,7 +23,7 @@ class CollectNotificationJobTest extends AbstractSuite
 
         $mock = \Atom::partialMock();
         $arg = [
-            ['notification' => FooNotification::class, 'arguments' => ['foo']],
+            ['notification' => FooNotification::class, 'arguments' => ['foo'], 'group_by' => ''],
         ];
         $mock->shouldReceive('exchangerPull')->once()->with("eloquent_notification:collect_notify:{$user->id}")->andReturn($arg);
 
@@ -49,21 +49,27 @@ class CollectNotificationJobTest extends AbstractSuite
 
         $mock = \Atom::partialMock();
         $arg = [
-            ['notification' => FooNotification::class, 'arguments' => ['foo-1', 'foo-a']],
-            ['notification' => BazNotification::class, 'arguments' => ['baz-1']],
-            ['notification' => FooNotification::class, 'arguments' => ['foo-2', 'foo-b']],
-            ['notification' => BazNotification::class, 'arguments' => ['baz-2']],
-            ['notification' => BazNotification::class, 'arguments' => ['baz-3']],
+            ['notification' => FooNotification::class, 'arguments' => ['foo-1', 'foo-a'], 'group_by' => ''],
+            ['notification' => BazNotification::class, 'arguments' => ['baz-1'], 'group_by' => ''],
+            ['notification' => FooNotification::class, 'arguments' => ['foo-2', 'foo-b'], 'group_by' => ''],
+            ['notification' => BazNotification::class, 'arguments' => ['baz-2'], 'group_by' => ''],
+            ['notification' => BazNotification::class, 'arguments' => ['baz-3'], 'group_by' => ''],
+            ['notification' => FooNotification::class, 'arguments' => ['foo-3', 'foo-c'], 'group_by' => 'alt'],
         ];
         $mock->shouldReceive('exchangerPull')->once()->with("eloquent_notification:collect_notify:{$user->id}")->andReturn($arg);
 
         dispatch(new CollectNotificationJob($user));
 
-        \Notification::assertSentTimes(FooNotification::class, 1);
+        \Notification::assertSentTimes(FooNotification::class, 2);
         \Notification::assertSentTo(
             $user,
             FooNotification::class,
             fn ($notification, $channels) => $notification->arg1 == ['foo-1', 'foo-2'] && $notification->arg2 == ['foo-a', 'foo-b']
+        );
+        \Notification::assertSentTo(
+            $user,
+            FooNotification::class,
+            fn ($notification, $channels) => $notification->arg1 == ['foo-3'] && $notification->arg2 == ['foo-c']
         );
 
         \Notification::assertSentTimes(BazNotification::class, 1);

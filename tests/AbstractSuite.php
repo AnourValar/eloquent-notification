@@ -48,7 +48,7 @@ abstract class AbstractSuite extends \Orchestra\Testbench\TestCase
 
     /**
      * @param \Illuminate\Foundation\Application $app
-     * @return array
+     * @return array<int, class-string>
      */
     protected function getPackageProviders($app)
     {
@@ -61,7 +61,7 @@ abstract class AbstractSuite extends \Orchestra\Testbench\TestCase
 
     /**
      * @param \Illuminate\Foundation\Application $app
-     * @return array
+     * @return array<string, class-string>
      */
     protected function getPackageAliases($app)
     {

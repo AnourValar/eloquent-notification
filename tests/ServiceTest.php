@@ -116,20 +116,44 @@ class ServiceTest extends AbstractSuite
     /**
      * @return void
      */
-    public function test_collectNotify()
+    public function test_collectNotify_1()
     {
         \Queue::fake();
         $class = config('auth.providers.users.model');
         $user1 = tap((new $class()))->save();
 
         $mock = \Atom::partialMock();
-        $arg = ['notification' => FooNotification::class, 'arguments' => ['foo']];
+        $arg = ['notification' => FooNotification::class, 'arguments' => ['foo'], 'group_by' => ''];
         $mock->shouldReceive('exchangerPush')->once()->with("eloquent_notification:collect_notify:{$user1->id}", $arg);
 
         \App::make(\AnourValar\EloquentNotification\Service::class)->collectNotify(
             $user1,
             FooNotification::class,
             ['foo']
+        );
+
+        \Queue::assertPushed(CollectNotificationJob::class, 1);
+        \Queue::assertPushed(CollectNotificationJob::class, fn ($job) => $job->user->id == $user1->id);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_collectNotify_2()
+    {
+        \Queue::fake();
+        $class = config('auth.providers.users.model');
+        $user1 = tap((new $class()))->save();
+
+        $mock = \Atom::partialMock();
+        $arg = ['notification' => FooNotification::class, 'arguments' => ['foo'], 'group_by' => 'alt'];
+        $mock->shouldReceive('exchangerPush')->once()->with("eloquent_notification:collect_notify:{$user1->id}", $arg);
+
+        \App::make(\AnourValar\EloquentNotification\Service::class)->collectNotify(
+            $user1,
+            FooNotification::class,
+            ['foo'],
+            'alt'
         );
 
         \Queue::assertPushed(CollectNotificationJob::class, 1);
