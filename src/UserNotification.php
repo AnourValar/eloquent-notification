@@ -146,18 +146,6 @@ class UserNotification extends Model
     ];
 
     /**
-     * Bootstrap the model and its traits.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::observe(\AnourValar\EloquentNotification\Observers\UserNotificationObserver::class);
-    }
-
-    /**
      * @see \AnourValar\EloquentValidation\ModelTrait::getAttributeNamesFromModelLang()
      *
      * @return array

@@ -65,5 +65,8 @@ class AnourValarEloquentNotificationServiceProvider extends ServiceProvider
         \Notification::extend('push', function () {
             return \App::make(\AnourValar\EloquentNotification\Drivers\PushChannel::class);
         });
+
+        // observer
+        \AnourValar\EloquentNotification\UserNotification::observe(\AnourValar\EloquentNotification\Observers\UserNotificationObserver::class);
     }
 }
