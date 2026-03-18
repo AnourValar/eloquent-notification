@@ -38,7 +38,7 @@ return [
         ],
     ],
 
-    'model' => App\UserNotification::class,
+    'model' => AnourValar\EloquentNotification\UserNotification::class, // @TODO: App\UserNotification::class,
     'collect_delay_seconds' => 900, // 15 minutes
 
     'trigger' => [ // every trigger should have a unique handler (bind)

@@ -67,6 +67,7 @@ class AnourValarEloquentNotificationServiceProvider extends ServiceProvider
         });
 
         // observer
-        \AnourValar\EloquentNotification\UserNotification::observe(\AnourValar\EloquentNotification\Observers\UserNotificationObserver::class);
+        $class = config('eloquent_notification.model');
+        $class::observe(\AnourValar\EloquentNotification\Observers\UserNotificationObserver::class);
     }
 }
