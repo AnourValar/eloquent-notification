@@ -50,7 +50,7 @@ public function routeNotificationForSms($notification)
  */
 public function routeNotificationForPush($notification)
 {
-    return $this->tokens->pluck('push_token')->toArray(); // set your attribute
+    return $this->tokens()->orderBy('id', 'DESC')->limit(10)->pluck('push_token')->toArray(); // set your attribute
 }
 ```
 
