@@ -11,7 +11,8 @@ class AbstractNotificationTest extends AbstractSuite
      */
     public function test_via_soft_delete()
     {
-        $user1 = new class () extends \Illuminate\Foundation\Auth\User {
+        $user1 = new class () extends \Illuminate\Foundation\Auth\User
+        {
             use \Illuminate\Database\Eloquent\SoftDeletes;
             use \Illuminate\Notifications\RoutesNotifications;
             protected $table = 'users';
@@ -19,7 +20,8 @@ class AbstractNotificationTest extends AbstractSuite
         $user1->save();
         \AnourValar\EloquentNotification\UserNotification::factory()->create(['user_id' => $user1->id, 'trigger' => 'foo', 'channels' => ['sms', 'telegram']]);
 
-        $user2 = new class () extends \Illuminate\Foundation\Auth\User {
+        $user2 = new class () extends \Illuminate\Foundation\Auth\User
+        {
             use \Illuminate\Notifications\RoutesNotifications;
             protected $table = 'users';
         };
@@ -54,7 +56,8 @@ class AbstractNotificationTest extends AbstractSuite
      */
     public function test_via_duplicate()
     {
-        $user1 = new class () extends \Illuminate\Foundation\Auth\User {
+        $user1 = new class () extends \Illuminate\Foundation\Auth\User
+        {
             use \Illuminate\Notifications\RoutesNotifications;
             protected $table = 'users';
         };
@@ -63,7 +66,8 @@ class AbstractNotificationTest extends AbstractSuite
         \AnourValar\EloquentNotification\UserNotification::factory()->create(['user_id' => $user1->id, 'trigger' => 'bar', 'channels' => ['sms']]);
         \AnourValar\EloquentNotification\UserNotification::factory()->create(['user_id' => $user1->id, 'trigger' => 'baz', 'channels' => ['telegram']]);
 
-        $user2 = new class () extends \Illuminate\Foundation\Auth\User {
+        $user2 = new class () extends \Illuminate\Foundation\Auth\User
+        {
             use \Illuminate\Notifications\RoutesNotifications;
             protected $table = 'users';
         };
@@ -110,7 +114,8 @@ class AbstractNotificationTest extends AbstractSuite
      */
     public function test_via_cache()
     {
-        $user1 = new class () extends \Illuminate\Foundation\Auth\User {
+        $user1 = new class () extends \Illuminate\Foundation\Auth\User
+        {
             use \Illuminate\Notifications\RoutesNotifications;
             protected $table = 'users';
         };
@@ -147,7 +152,8 @@ class AbstractNotificationTest extends AbstractSuite
      */
     public function test_via_empty()
     {
-        $user = new class () extends \Illuminate\Foundation\Auth\User {
+        $user = new class () extends \Illuminate\Foundation\Auth\User
+        {
             use \Illuminate\Notifications\RoutesNotifications;
             protected $table = 'users';
         };

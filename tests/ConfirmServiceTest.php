@@ -101,7 +101,8 @@ class ConfirmServiceTest extends AbstractSuite
 
         // Iteration 2
         \Cache::flush();
-        $user = new class () extends \Illuminate\Foundation\Auth\User {
+        $user = new class () extends \Illuminate\Foundation\Auth\User
+        {
             protected $table = 'users';
         };
         $user->forceFill(['email' => 'foo@example.org'])->save();
@@ -132,7 +133,8 @@ class ConfirmServiceTest extends AbstractSuite
 
         // Iteration 2
         \Cache::flush();
-        $user = new class () extends \Illuminate\Foundation\Auth\User {
+        $user = new class () extends \Illuminate\Foundation\Auth\User
+        {
             protected $table = 'users';
         };
         $user->forceFill(['email' => 'foo@example.org'])->save();
@@ -157,7 +159,8 @@ class ConfirmServiceTest extends AbstractSuite
 
         // Iteration 2
         \Cache::flush();
-        $user = new class () extends \Illuminate\Foundation\Auth\User {
+        $user = new class () extends \Illuminate\Foundation\Auth\User
+        {
             use \Illuminate\Database\Eloquent\SoftDeletes;
             protected $table = 'users';
         };
@@ -292,7 +295,8 @@ class ConfirmServiceTest extends AbstractSuite
 
         // Iteration 2
         \Cache::flush();
-        $user = new class () extends \Illuminate\Foundation\Auth\User {
+        $user = new class () extends \Illuminate\Foundation\Auth\User
+        {
             protected $table = 'users';
         };
         $user->forceFill(['phone' => '79001234567'])->save();
@@ -323,7 +327,8 @@ class ConfirmServiceTest extends AbstractSuite
 
         // Iteration 2
         \Cache::flush();
-        $user = new class () extends \Illuminate\Foundation\Auth\User {
+        $user = new class () extends \Illuminate\Foundation\Auth\User
+        {
             protected $table = 'users';
         };
         $user->forceFill(['phone' => '79001234567'])->save();
@@ -348,7 +353,8 @@ class ConfirmServiceTest extends AbstractSuite
 
         // Iteration 2
         \Cache::flush();
-        $user = new class () extends \Illuminate\Foundation\Auth\User {
+        $user = new class () extends \Illuminate\Foundation\Auth\User
+        {
             use \Illuminate\Database\Eloquent\SoftDeletes;
             protected $table = 'users';
         };
@@ -873,7 +879,8 @@ class ConfirmServiceTest extends AbstractSuite
      */
     public function test_fa()
     {
-        $user = new class () extends \Illuminate\Foundation\Auth\User {
+        $user = new class () extends \Illuminate\Foundation\Auth\User
+        {
             protected $table = 'users';
 
             protected $casts = [
@@ -930,7 +937,8 @@ class ConfirmServiceTest extends AbstractSuite
      */
     public function test_faAtLeast()
     {
-        $user = new class () extends \Illuminate\Foundation\Auth\User {
+        $user = new class () extends \Illuminate\Foundation\Auth\User
+        {
             protected $table = 'users';
 
             protected $casts = [
