@@ -108,13 +108,27 @@ trait FaTrait
     public function fa(?\Illuminate\Foundation\Auth\User $user): array
     {
         $stringHelper = \App::make(\AnourValar\LaravelAtom\Helpers\StringHelper::class);
+        $class = config('auth.providers.users.model');
+        $attributes = array_keys(new $class()->getCasts());
+        $result = [];
 
-        return [
-            'email' => $user?->email ? ['mask' => $stringHelper->mask($user->email, '@'), 'value' => encrypt($user->email)] : null,
-            'phone' => $user?->phone ? ['mask' => $stringHelper->mask($user->phone), 'value' => encrypt($user->phone)] : null,
-            'password' => $user?->password ? true : null,
-            'totp' => $user?->totp_secret ? true : null,
-        ];
+        if (in_array('email', $attributes)) {
+            $result['email'] = $user?->email ? ['mask' => $stringHelper->mask($user->email, '@'), 'value' => encrypt($user->email)] : null;
+        }
+
+        if (in_array('phone', $attributes)) {
+            $result['phone'] = $user?->phone ? ['mask' => $stringHelper->mask($user->phone), 'value' => encrypt($user->phone)] : null;
+        }
+
+        if (in_array('password', $attributes)) {
+            $result['password'] = $user?->password ? true : null;
+        }
+
+        if (in_array('totp_secret', $attributes)) {
+            $result['totp'] = $user?->totp_secret ? true : null;
+        }
+
+        return $result;
     }
 
     /**

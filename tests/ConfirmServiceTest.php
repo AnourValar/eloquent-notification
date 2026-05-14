@@ -873,11 +873,10 @@ class ConfirmServiceTest extends AbstractSuite
         $this->assertCustomValidationFailed(fn () => $this->confirmService->validateFa($cryptograms, 3), trans('eloquent_notification::confirm.incorrect'));
     }
 
-
     /**
      * @return void
      */
-    public function test_fa()
+    public function test_fa_1()
     {
         $user = new class () extends \Illuminate\Foundation\Auth\User
         {
@@ -890,6 +889,7 @@ class ConfirmServiceTest extends AbstractSuite
                 'totp_secret' => 'string',
             ];
         };
+        config(['auth.providers.users.model' => get_class($user)]);
 
         $this->assertSame(
             ['email' => null, 'phone' => null, 'password' => null, 'totp' => null],
@@ -935,6 +935,34 @@ class ConfirmServiceTest extends AbstractSuite
     /**
      * @return void
      */
+    public function test_fa_2()
+    {
+        $user = new class () extends \Illuminate\Foundation\Auth\User
+        {
+            protected $table = 'users';
+
+            protected $casts = [
+                'email' => 'string',
+                'password' => 'string',
+            ];
+        };
+        config(['auth.providers.users.model' => get_class($user)]);
+
+        $this->assertSame(
+            ['email' => null, 'password' => null],
+            $this->confirmService->fa(null)
+        );
+
+        $user->forceFill(['password' => 'bar']);
+        $this->assertEquals(
+            ['email' => null, 'password' => true],
+            $this->confirmService->fa($user)
+        );
+    }
+
+    /**
+     * @return void
+     */
     public function test_faAtLeast()
     {
         $user = new class () extends \Illuminate\Foundation\Auth\User
@@ -948,6 +976,7 @@ class ConfirmServiceTest extends AbstractSuite
                 'totp_secret' => 'string',
             ];
         };
+        config(['auth.providers.users.model' => get_class($user)]);
 
         $this->assertFalse($this->confirmService->faAtLeast(1, null));
         $this->assertFalse($this->confirmService->faAtLeast(2, null));
