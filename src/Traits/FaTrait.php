@@ -110,6 +110,7 @@ trait FaTrait
         $stringHelper = \App::make(\AnourValar\LaravelAtom\Helpers\StringHelper::class);
         $class = config('auth.providers.users.model');
         $attributes = array_keys(new $class()->getCasts());
+
         $result = [];
 
         if (in_array('email', $attributes)) {
