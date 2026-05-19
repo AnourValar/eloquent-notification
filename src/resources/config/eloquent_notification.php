@@ -46,7 +46,10 @@ return [
             'bind' => \App\Notifications\Trigger\LoggedInNotification::class,
             'title' => 'eloquent_notification::user_notification.trigger.logged_in',
             'channels' => ['sms', 'telegram', 'mail', 'push', 'database'],
+
             //'optgroup' => 'eloquent_notification::user_notification.trigger.user_optgroup',
+            //'ui' => 'readonly', // ui group (frontend)
+            //'is_public' => false, // is edited by user
         ],*/
     ],
 
