@@ -25,7 +25,7 @@ return [
 
         AnourValar\EloquentNotification\Adapters\Exchanger\ExchangerInterface::class => [
             'bind' => env('ELOQUENT_NOTIFICATION_EXCHANGER_ADAPTER', AnourValar\EloquentNotification\Adapters\Exchanger\NullAdapter::class),
-            'mail' => ['transport' => 'smtp', 'host' => env('ELOQUENT_NOTIFICATION_MAIL_HOST'), 'port' => 1025, 'encryption' => 'tls'],
+            'mail' => ['transport' => 'smtp', 'host' => env('ELOQUENT_NOTIFICATION_MAIL_HOST'), 'port' => env('ELOQUENT_NOTIFICATION_MAIL_PORT', 1025), 'encryption' => 'tls'],
         ],
 
         AnourValar\EloquentNotification\Adapters\Push\PushInterface::class => [
