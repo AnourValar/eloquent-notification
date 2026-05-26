@@ -113,6 +113,7 @@ protected $middlewareAliases = [
     'confirm.totp.input' => \AnourValar\EloquentNotification\Http\Middleware\ConfirmTotpInput::class,
     'confirm.totp.my' => \AnourValar\EloquentNotification\Http\Middleware\ConfirmTotpMy::class,
     'confirm.fa.my' => \AnourValar\EloquentNotification\Http\Middleware\ConfirmFaMy::class,
+    'confirm.fa.my.dynamic' => \AnourValar\EloquentNotification\Http\Middleware\ConfirmFaMyDynamic::class,
 ];
 ```
 

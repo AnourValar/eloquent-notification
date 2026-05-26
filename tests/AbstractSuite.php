@@ -41,6 +41,7 @@ abstract class AbstractSuite extends \Orchestra\Testbench\TestCase
             $table->increments('id');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->string('totp_secret')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
