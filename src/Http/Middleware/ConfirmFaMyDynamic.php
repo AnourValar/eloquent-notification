@@ -15,8 +15,6 @@ class ConfirmFaMyDynamic extends ConfirmFaMy
      * @param  string $cryptogramsKey
      * @param int $qty
      * @param  array $faBlack
-     * @psalm-suppress MethodSignatureMismatch
-     * @psalm-suppress ParamNameMismatch
      */
     public function handle(Request $request, Closure $next, string $cryptogramsKey, int $qty, ...$faBlack): Response
     {
