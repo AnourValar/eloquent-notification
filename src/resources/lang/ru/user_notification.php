@@ -20,7 +20,7 @@ return [
 
     'channels' => [
         'database' => 'ЛК',
-        'mail' => 'E-mail',
+        'mail' => 'Email',
         'sms' => 'SMS',
         'telegram' => 'Telegram',
         'push' => 'Push',

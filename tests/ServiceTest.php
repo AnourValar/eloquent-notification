@@ -106,7 +106,7 @@ class ServiceTest extends AbstractSuite
         $this->assertSame(
             [
                 'database' => 'ЛК',
-                'mail' => 'E-mail',
+                'mail' => 'Email',
                 'sms' => 'SMS',
             ],
             \App::make(\AnourValar\EloquentNotification\Service::class)->channels()

@@ -5,7 +5,7 @@ return [
     'miscount' => 'Confirmation of factors required: :qty',
     'expired' => 'The request has expired. Please try again from the beginning.',
     'incorrect_code' => 'Incorrect code.',
-    'email_is_empty' => 'E-mail must be filled in.',
+    'email_is_empty' => 'Email must be filled in.',
     'phone_is_empty' => 'Phone must be filled in.',
 
     'email_not_exists' => 'The specified email is not registered.',
