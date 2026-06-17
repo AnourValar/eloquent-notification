@@ -327,7 +327,7 @@ class ConfirmService
         }
 
         if (is_string($value)) {
-            $value = mb_strtolower($value);
+            $value = mb_strtolower(trim($value));
         }
 
         return $value;
