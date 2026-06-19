@@ -219,6 +219,18 @@ class UserNotification extends Model
     }
 
     /**
+     * "Restore" after-validation
+     *
+     * @param \Illuminate\Validation\Validator $validator
+     * @param bool $basic
+     * @return void
+     */
+    public function restoreAfterValidation(\Illuminate\Validation\Validator $validator, bool $basic): void
+    {
+
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
