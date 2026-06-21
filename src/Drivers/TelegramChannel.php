@@ -5,7 +5,7 @@ namespace AnourValar\EloquentNotification\Drivers;
 use Illuminate\Notifications\Notification;
 use AnourValar\EloquentNotification\Adapters\Telegram\TelegramInterface;
 
-class TelegramChannel // @TODO: tests
+class TelegramChannel
 {
     /**
      * Send the given notification.
