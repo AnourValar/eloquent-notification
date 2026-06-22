@@ -29,7 +29,7 @@ class Service
             $curr = $collection->where('trigger', '=', $trigger);
             if ($group && config("eloquent_notification.trigger.{$trigger}") && ! config("eloquent_notification.trigger.{$trigger}.{$group}")) {
                 throw new ValidationException(
-                    ['trigger' => trans('eloquent-validation::validation.unchangeable', ['attribute' => trans(config("eloquent_notification.trigger.{$trigger}.title"))])],
+                    ['trigger' => trans('eloquent_validation::validation.unchangeable', ['attribute' => trans(config("eloquent_notification.trigger.{$trigger}.title"))])],
                     prefix: [$validatePrefix, $trigger]
                 );
             }
