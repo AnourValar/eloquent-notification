@@ -87,7 +87,9 @@ trait FaTrait
 
         // Singleton
         foreach ($cryptograms as $cryptogram) {
-            $this->throttle('fa_validate', $cryptogram);
+            if ($this->throttle('fa_validate', $cryptogram) > 1) {
+                throw (new ValidationException(trans('eloquent_notification::confirm.incorrect')))->status(403);
+            }
         }
 
 

@@ -282,11 +282,13 @@ class ConfirmService
      * @param string $key
      * @param string $error
      * @param bool $payOff
-     * @return void
+     * @return int
      * @throws \AnourValar\EloquentValidation\Exceptions\ValidationException
      */
-    protected function throttle(string $name, string $key, string $error = 'eloquent_notification::confirm.too_many', bool $payOff = false): void
+    protected function throttle(string $name, string $key, string $error = 'eloquent_notification::confirm.too_many', bool $payOff = false): int
     {
+        $increment = null;
+
         foreach (config("eloquent_notification.confirm.throttle.{$name}") as $index => $policy) {
             $cacheKey = implode(' / ', [__METHOD__, $name, $index, $key]);
 
@@ -294,8 +296,14 @@ class ConfirmService
                 throw (new ValidationException(trans($error, ['seconds' => \RateLimiter::availableIn($cacheKey)])))->status(429);
             }
 
-            \RateLimiter::increment($cacheKey, $policy['seconds'], $payOff ? $policy['limit'] : 1);
+            $increment = \RateLimiter::increment($cacheKey, $policy['seconds'], $payOff ? $policy['limit'] : 1);
         }
+
+        if (! $increment) {
+            throw new \RuntimeException('Incorrect usage.');
+        }
+
+        return $increment;
     }
 
     /**

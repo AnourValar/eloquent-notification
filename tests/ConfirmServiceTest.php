@@ -744,6 +744,23 @@ class ConfirmServiceTest extends AbstractSuite
     /**
      * @return void
      */
+    public function test_validateFa_race_condition()
+    {
+        \Date::setTestNow('2025-10-03 10:00:00');
+        $cryptograms = [
+            encrypt(new FaMapper('foo', ['phone' => '79000000000'], strtotime('2025-10-03 10:00:00'))),
+        ];
+
+        $limiter = \RateLimiter::partialMock();
+        $limiter->shouldReceive('tooManyAttempts')->andReturn(false);
+        $limiter->shouldReceive('increment')->andReturn(2);
+
+        $this->assertCustomValidationFailed(fn () => $this->confirmService->validateFa($cryptograms, 1), true, trans('eloquent_notification::confirm.incorrect'));
+    }
+
+    /**
+     * @return void
+     */
     public function test_validateFa_2fa()
     {
         \Date::setTestNow('2025-10-03 10:00:00');
