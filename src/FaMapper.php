@@ -32,7 +32,7 @@ final class FaMapper
     {
         $this->name = $name;
 
-        $this->contacts = array_map(fn ($item) => is_string($item) ? mb_strtolower($item) : $item, array_filter($contacts));
+        $this->contacts = array_map(fn ($item) => is_string($item) ? mb_strtolower(trim($item)) : $item, array_filter($contacts));
         if (! $this->contacts) {
             throw new \RuntimeException('Incorrect usage');
         }
