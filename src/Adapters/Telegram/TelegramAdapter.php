@@ -83,8 +83,9 @@ class TelegramAdapter implements TelegramInterface
         $username = mb_strtolower($username);
 
         $cacheKey = implode(' / ', [__METHOD__, $username]);
-        if ($chatId = \Cache::driver('array')->get($cacheKey)) {
-            return $chatId;
+        $chatId = \Cache::driver('array')->get($cacheKey);
+        if (isset($chatId)) {
+            return $chatId ?: null;
         }
 
         // Send a request
@@ -134,6 +135,7 @@ class TelegramAdapter implements TelegramInterface
 
         // Result
         if (is_null($chatId)) {
+            \Cache::driver('array')->forever($cacheKey, false);
             return null;
         }
 
