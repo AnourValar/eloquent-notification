@@ -45,7 +45,7 @@ class UserNotificationFactory extends Factory
     {
         $users = \Cache::driver('array')->rememberForever(__METHOD__, function () {
             $class = config('auth.providers.users.model');
-            if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses($class))) {
+            if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses_recursive($class))) {
                 $user = $class::withTrashed();
             } else {
                 $user = $class::query();

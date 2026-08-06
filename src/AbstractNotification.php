@@ -65,7 +65,7 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
         }
 
         // Deleted?
-        if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses($notifiable->getModel()))) {
+        if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses_recursive($notifiable->getModel()))) {
             $column = $notifiable->getDeletedAtColumn();
             if ($notifiable->$column) {
                 return [];

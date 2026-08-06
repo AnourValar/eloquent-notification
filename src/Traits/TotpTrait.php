@@ -60,7 +60,7 @@ trait TotpTrait
         $code = (string) $code;
 
         // Throttle
-        $this->throttle('totp_validate', $secretBase32);
+        $this->throttle('totp_validate', sha1($secretBase32));
 
         $now = now()->timestamp;
         $secretBin = $this->base32DecodeNopad($secretBase32);

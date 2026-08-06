@@ -270,7 +270,7 @@ class ConfirmService
     {
         $class = config('auth.providers.users.model');
 
-        if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses($class))) {
+        if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses_recursive($class))) {
             return $class::withTrashed();
         }
 

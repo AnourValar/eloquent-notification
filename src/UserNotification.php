@@ -189,7 +189,7 @@ class UserNotification extends Model
         // user_id
         if ($this->isDirty('user_id') && ! $basic) {
             $class = config('auth.providers.users.model');
-            if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses($class))) {
+            if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses_recursive($class))) {
                 $user = $class::withTrashed()->find($this->user_id);
             } else {
                 $user = $class::find($this->user_id);
@@ -237,7 +237,7 @@ class UserNotification extends Model
     {
         $class = config('auth.providers.users.model');
 
-        if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses($class))) {
+        if (in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses_recursive($class))) {
             return $this->belongsTo($class)->withTrashed();
         }
 
