@@ -123,6 +123,9 @@ class AbstractNotificationTest extends AbstractSuite
         $user1->save();
         $user2->save();
 
+        $user1->created_at = now()->subHour(); // settings are cached for "old" notifiables only
+        $user2->created_at = now()->subHour();
+
         $userNotification1a = \AnourValar\EloquentNotification\UserNotification::factory()->create(['user_id' => $user1->id, 'trigger' => 'foo', 'channels' => ['mail']]);
         $userNotification1b = \AnourValar\EloquentNotification\UserNotification::factory()->create(['user_id' => $user1->id, 'trigger' => 'bar', 'channels' => ['sms']]);
         $userNotification2a = \AnourValar\EloquentNotification\UserNotification::factory()->create(['user_id' => $user2->id, 'trigger' => 'foo', 'channels' => ['telegram']]);
@@ -145,6 +148,44 @@ class AbstractNotificationTest extends AbstractSuite
         $this->assertSame(['database'], (new BarNotification(1))->via($user2));
         $userNotification2b->delete();
         $this->assertSame(['database'], (new BarNotification(2))->via($user2));
+    }
+
+    /**
+     * @return void
+     */
+    public function test_via_cache_channels_created_at()
+    {
+        $this->freezeSecond();
+
+        // title => [created_at, $timestamps, "settings are cached"]
+        $cases = [
+            'just created' => [now(), true, false],
+            'the border' => [now()->subMinutes(2), true, false],
+            'right after the border' => [now()->subMinutes(2)->subSecond(), true, true],
+            'an hour ago' => [now()->subHour(), true, true],
+            'in a minute (the difference is absolute)' => [now()->addMinute(), true, false],
+            'in an hour' => [now()->addHour(), true, true],
+            'created_at is empty' => [null, true, true],
+            'timestamps are disabled' => [now()->toDateTimeString(), false, true],
+        ];
+
+        foreach ($cases as $title => [$createdAt, $timestamps, $cached]) {
+            $user = new class () extends \Illuminate\Foundation\Auth\User
+            {
+                use \Illuminate\Notifications\RoutesNotifications;
+                protected $table = 'users';
+            };
+            $user->save();
+            $user->timestamps = $timestamps;
+            $user->created_at = $createdAt;
+
+            $userNotification = \AnourValar\EloquentNotification\UserNotification::factory()->create(['user_id' => $user->id, 'trigger' => 'bar', 'channels' => ['sms']]);
+
+            $this->assertSame(['sms'], (new BarNotification(1))->via($user), $title);
+
+            $userNotification->delete();
+            $this->assertSame($cached ? ['sms'] : [], (new BarNotification(2))->via($user), $title);
+        }
     }
 
     /**

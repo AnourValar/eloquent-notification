@@ -20,7 +20,7 @@ class FooNotification extends \AnourValar\EloquentNotification\AbstractNotificat
      * {@inheritDoc}
      * @see \AnourValar\EloquentNotification\AbstractNotification::cacheChannels()
      */
-    protected function cacheChannels(): int
+    protected function cacheChannels($notifiable): int
     {
         return 0;
     }

@@ -32,10 +32,18 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
     /**
      * Cache settings for a period of time (seconds)
      *
+     * @param mixed $notifiable
      * @return int
      */
-    protected function cacheChannels(): int
+    protected function cacheChannels($notifiable): int
     {
+        if ($notifiable instanceof \Illuminate\Database\Eloquent\Model && $notifiable->usesTimestamps()) {
+            $column = $notifiable->getCreatedAtColumn();
+            if (isset($notifiable->$column) && $notifiable->$column ->diffInMinutes(now(), true) <= 2) {
+                return 0;
+            }
+        }
+
         return 2 * 60; // 2 minutes
     }
 
@@ -85,7 +93,7 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
         if (! $lockFor || \Cache::lock(implode(' / ', $keys), $lockFor)->get()) {
             $notifications = \Cache::memo()->remember(
                 implode(' / ', [__METHOD__, get_class($notifiable), $notifiableId]),
-                $this->cacheChannels(),
+                $this->cacheChannels($notifiable),
                 function () use ($notifiableId) {
                     $class = config('eloquent_notification.model');
                     return $class::where('user_id', '=', $notifiableId)->get(['trigger', 'channels'])->pluck('channels', 'trigger')->toArray();
